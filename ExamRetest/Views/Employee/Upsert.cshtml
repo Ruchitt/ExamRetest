@@ -1,0 +1,95 @@
+﻿@model ExamRetest.Models.ViewModels.EmployeeVM
+<div class="container p-1">
+    <div class="row pt-4">
+        <div class="col-6">
+			<h4>@(Model.employee.EmployeeId != 0 ? "Update" : "Add") Employee</h4>
+		</div>
+    </div>
+</div>
+<form id="form1">
+	<input asp-for="employee.EmployeeId" hidden />
+	<div class="border p-3 mt-4">
+		<div class="mb-3">
+			<label asp-for="employee.Name"></label>
+			<input asp-for="employee.Name" class="form-control" />
+			<span asp-validation-for="employee.Name" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="employee.Description"></label>
+			<input asp-for="employee.Description" class="form-control"></input>
+			<span asp-validation-for="employee.Description" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="employee.Salary"></label>
+			<input asp-for="employee.Salary" class="form-control" />
+			<span asp-validation-for="employee.Salary" class="text-danger"></span>
+		</div>
+		<div class="mb-3" >
+			<label>Role</label>
+			<br/>
+			<div class="checkbox">
+				<ul id="clist">
+					<li>
+                   @foreach (var x in Model.roleList)  
+                      {
+
+                        <input type="checkbox" name="selectedIds" class="form-check-input">
+                        <label for="Check_@x.Value" class="form-check-label">@x.Text </label><br />    
+                    }
+					</li>
+				</ul>
+                  </div> 
+		</div>
+		@*@foreach (var x in Model.roleList)
+		{
+			<input type="hidden" asp-for="@Model.roleList.Value"/>
+			<input asp-for="@Model.roleList.Selected"/>@Model.roleList.Text
+		}*@
+		<div class="form-group">
+			<label asp-for="employee.IsActive"></label>
+			<div>
+				<input type="checkbox" class="form-check-input" asp-for="employee.IsActive" />
+			</div>
+		</div>
+
+		@if (Model.employee.EmployeeId != 0)
+		{
+			<button type="submit" asp-controller="Employee" asp-action="Upsert" class="btn btn-primary" asp-route-id="@Model.employee.EmployeeId" style="width:150px">Update</button>
+		}
+		else
+		{
+			<button type="submit" onclick="submitForm()" class="btn btn-primary" style="width:150px">Create</button>
+		}
+		<a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Back to List</a>	</div>
+
+</form>
+
+<script>
+	function submitForm() {
+		var formData = $("#form1").serializeArray();
+		var selectedIds = [];
+		$("input[name='selectedIds']:checked").each(function () {
+			 selectedIds.push($(this).val());
+			
+		});
+		 formData.push({ name: 'selectedIds', value: selectedIds });
+		$.ajax({
+			url: '/Employee/Upsert',
+			type: 'POST',
+			data: formData,
+			success: function (result) {
+				
+			}
+		});
+	}
+</script>
+
+
+
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+
+	}
+}
