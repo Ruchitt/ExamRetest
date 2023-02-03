@@ -28,16 +28,16 @@
 			<label>Role</label>
 			<br/>
 			<div class="checkbox">
-				<ul id="clist">
-					<li>
                    @foreach (var x in Model.roleList)  
                       {
-
-                        <input type="checkbox" name="selectedIds" class="form-check-input">
+							var isChecked = false;
+							if(Model.employee.EmployeeId !=0 && Model.roleids.Contains(int.Parse(x.Value)))
+							{
+								isChecked = true;
+							}
+							<input type="checkbox" name="selectedIds" class="form-check-input" value="@x.Value" @(isChecked ? "checked" : "")>
                         <label for="Check_@x.Value" class="form-check-label">@x.Text </label><br />    
                     }
-					</li>
-				</ul>
                   </div> 
 		</div>
 		@*@foreach (var x in Model.roleList)
@@ -54,23 +54,21 @@
 
 		@if (Model.employee.EmployeeId != 0)
 		{
-			<button type="submit" asp-controller="Employee" asp-action="Upsert" class="btn btn-primary" asp-route-id="@Model.employee.EmployeeId" style="width:150px">Update</button>
+			<button type="button" onclick="submitForm()" class="btn btn-primary" asp-route-id="@Model.employee.EmployeeId" style="width:150px">Update</button>
 		}
 		else
 		{
-			<button type="submit" onclick="submitForm()" class="btn btn-primary" style="width:150px">Create</button>
+			<button type="button" onclick="submitForm()" class="btn btn-primary" style="width:150px">Create</button>
 		}
 		<a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Back to List</a>	</div>
 
 </form>
-
 <script>
 	function submitForm() {
 		var formData = $("#form1").serializeArray();
 		var selectedIds = [];
 		$("input[name='selectedIds']:checked").each(function () {
 			 selectedIds.push($(this).val());
-			
 		});
 		 formData.push({ name: 'selectedIds', value: selectedIds });
 		$.ajax({
@@ -78,15 +76,11 @@
 			type: 'POST',
 			data: formData,
 			success: function (result) {
-				
+				window.location.replace("/Employee")
 			}
 		});
 	}
 </script>
-
-
-
-
 @section Scripts{
 	@{
 		<partial name="_ValidationScriptsPartial" />

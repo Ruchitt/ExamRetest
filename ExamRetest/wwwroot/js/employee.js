@@ -10,8 +10,10 @@ function loadDataTable() {
             "url": "Employee/GetAll"
         },
         "columns": [
+            { "data": "employeeId", "width": "25%" },
             { "data": "name", "width": "25%" },
             { "data": "description", "width": "25%" },
+            { "data": "salary", "width": "25%" },
             { "data": "isActive", "width": "25%" },
             {
                 "data": "employeeId",

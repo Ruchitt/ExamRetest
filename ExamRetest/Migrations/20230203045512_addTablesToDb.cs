@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExamRetest.Migrations
 {
-    public partial class AddEmployeesAndRolesToDb : Migration
+    public partial class addTablesToDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,21 @@ namespace ExamRetest.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "emproles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_emproles", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
                 {
@@ -55,45 +70,6 @@ namespace ExamRetest.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "emproles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    employeeDetailEmployeeId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    roleTypeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_emproles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_emproles_employees_employeeDetailEmployeeId",
-                        column: x => x.employeeDetailEmployeeId,
-                        principalTable: "employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_emproles_roles_roleTypeId",
-                        column: x => x.roleTypeId,
-                        principalTable: "roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_emproles_employeeDetailEmployeeId",
-                table: "emproles",
-                column: "employeeDetailEmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_emproles_roleTypeId",
-                table: "emproles",
-                column: "roleTypeId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_roles_RoleTypeId",
                 table: "roles",
@@ -103,10 +79,10 @@ namespace ExamRetest.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "emproles");
+                name: "employees");
 
             migrationBuilder.DropTable(
-                name: "employees");
+                name: "emproles");
 
             migrationBuilder.DropTable(
                 name: "roles");

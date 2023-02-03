@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamRetest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230202095654_AddEmployeesAndRolesToDb")]
-    partial class AddEmployeesAndRolesToDb
+    [Migration("20230203045512_addTablesToDb")]
+    partial class addTablesToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,17 +64,7 @@ namespace ExamRetest.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("employeeDetailEmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("roleTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("employeeDetailEmployeeId");
-
-                    b.HasIndex("roleTypeId");
 
                     b.ToTable("emproles");
                 });
@@ -97,25 +87,6 @@ namespace ExamRetest.Migrations
                     b.HasIndex("RoleTypeId");
 
                     b.ToTable("roles");
-                });
-
-            modelBuilder.Entity("ExamRetest.Models.EmployeeeRoles", b =>
-                {
-                    b.HasOne("ExamRetest.Models.EmployeeDetail", "employeeDetail")
-                        .WithMany()
-                        .HasForeignKey("employeeDetailEmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ExamRetest.Models.RoleType", "roleType")
-                        .WithMany()
-                        .HasForeignKey("roleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("employeeDetail");
-
-                    b.Navigation("roleType");
                 });
 
             modelBuilder.Entity("ExamRetest.Models.RoleType", b =>

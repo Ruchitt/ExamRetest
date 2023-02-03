@@ -8,5 +8,8 @@ namespace ExamRetest.Models.ViewModels
 		public EmployeeDetail employee { get; set; }
 		[ValidateNever]
 		public IEnumerable<SelectListItem> roleList { get; set; }
-	}
+		public List<int> roleids { get; set; }
+        public List<RoleType> rolenames { get; set; }
+
+    }
 }
